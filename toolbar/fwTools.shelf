@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shelfDocument>
+  <!-- This file contains definitions of shelves, toolbars, and tools.
+ It should not be hand-edited when it is being used by the application.
+ Note, that two definitions of the same element are not allowed in
+ a single file. -->
+
+  <toolshelf name="fwtools" label="fwTools">
+    <memberTool name="toggleisolate"/>
+  </toolshelf>
+
+  <tool name="toggleisolate" label="Isolate Selection" icon="hicon:/SVGIcons.index?BUTTONS_visible.svg">
+    <script scriptType="python"><![CDATA[import persistent_isolate
+reload(persistent_isolate)
+
+from hutil.Qt import QtCore, QtWidgets
+
+def handleDialog():
+    isonode = hou.node('/obj/FW_ISOLATIONDATA')
+    
+    if isonode:
+        # isonode found: show dialog to exit isomode
+        hou.session.ISODIALOG = IsoDialog(hou.ui.mainQtWindow())
+        hou.session.ISODIALOG.setWindowTitle('ISOLATION MODE')
+        hou.session.ISODIALOG.move(1200,200)
+        layout = QtWidgets.QVBoxLayout(hou.session.ISODIALOG)
+        layout.setSpacing(0)
+        exitbutton = QtWidgets.QPushButton()
+        exitbutton.setText("EXIT")
+        exitbutton.setStyleSheet("QPushButton { background-color : rgb(175, 50, 50);}");
+        label = QtWidgets.QLabel('(Alt-Q) to toggle ')
+        label.setAlignment(QtCore.Qt.AlignRight)
+        label.setStyleSheet("QLabel { background-color : rgb(55, 55, 55); color : rgb(100, 100, 100); font: 8pt; }");        
+        layout.addWidget(exitbutton)
+        layout.addWidget(label)
+        exitbutton.clicked.connect(runme)
+        hou.session.ISODIALOG.show()
+        hou.session.ISODIALOG.parent().activateWindow()
+
+    else:
+        # isnode not found close exit dialog
+        try:
+            hou.session.ISODIALOG.close()
+        except:
+            pass
+
+class IsoDialog(QtWidgets.QDialog):
+    def __init__(self, parent=None):
+        QtWidgets.QDialog.__init__(self,parent)
+        self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.WindowTitleHint | QtCore.Qt.CustomizeWindowHint)
+        self.setGeometry(250, 150, 200, 55)
+                
+def runme():
+    persistent_isolate.toggleIsolation()
+    handleDialog()
+
+
+#### MAIN    
+runme()]]></script>
+    <keywordList>
+      <keyword>isolate selection</keyword>
+    </keywordList>
+  </tool>
+</shelfDocument>

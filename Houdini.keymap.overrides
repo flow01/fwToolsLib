@@ -1,0 +1,2 @@
+h.tool:toggleisolate	"Isolate Selection"	"Shelf Tool: Isolate Selection"	 Alt+Q
+h.quit	Quit	"Quit the appication"	 Ctrl+Q
