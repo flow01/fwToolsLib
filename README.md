@@ -2,7 +2,9 @@
 
 Houdini Tools / Scripts & HDA Collection
 
-- Isolate Selection:
+- Isolate Selection (alt-Q):
+
+  this toggle will start a simple isolation-mode (as known from other packages like 3ds max, oder Softimage) only showing the currently selected object(s)
 
 # INSTALL & USE
 
